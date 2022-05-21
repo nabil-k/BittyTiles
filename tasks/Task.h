@@ -1,3 +1,6 @@
+#ifndef TASK
+#define TASK
+
 typedef struct task {
   int state;
   unsigned long period;
@@ -6,5 +9,7 @@ typedef struct task {
     
 } task;
 
-const unsigned short tasksNum = 1;
+const unsigned short tasksNum = 2;
 task tasks[tasksNum];
+
+#endif

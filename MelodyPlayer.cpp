@@ -7,7 +7,6 @@ int midiToFreq(int midiNote){
 }
 
 int Melody_Player(int state){
-    static int melodyNoteIndex;
     static int prevMelodyNoteTime;
     static int backgroundNoteIndex;
     static int prevBackgroundNoteTime;

@@ -1,9 +1,19 @@
 #ifndef TILES
 #define TILES
 
-const unsigned char melodyBuzzer = 13;
-const unsigned char backgroundBuzzer = 12;
-enum melody_player_states { TILES_INIT, TILES_PLAY};
+#include "MelodyPlayer.h"
+#include "Matrix.h"
+
+enum NoteKey{A, B, C};
+
+const uint16_t colors[] = {
+  matrix.Color(255, 0, 0), 
+  matrix.Color(0, 255, 0), 
+  matrix.Color(0, 0, 255) 
+};
+
+
+enum tiles_states { TILES_INIT, TILES_PLAY};
 int Tiles(int state);
 
 #endif
