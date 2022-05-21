@@ -6,7 +6,6 @@ int midiToFreq(int midiNote){
   return (int)((a / 32) * pow(2, ((float)(midiNote - 9) / 12.0)));
 }
 
-
 int Melody_Player(int state){
     static int melodyNoteIndex;
     static int prevMelodyNoteTime;
