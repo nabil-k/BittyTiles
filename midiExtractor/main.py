@@ -17,7 +17,7 @@ for i, track in enumerate(mid.tracks):
     print('Track {}: {}'.format(i, track.name))
     preTime = 0
     for msg in track:
-        if(msg.type == 'note_on' and msg.channel != 1):
+        if(msg.type == 'note_on' and msg.channel != 0):
             msg.velocity = 0 # silences channels we dont wanna hear
             preTime += msg.time
         else:
@@ -25,8 +25,15 @@ for i, track in enumerate(mid.tracks):
             preTime  = 0
             newTrack.append(msg)
             if(msg.type == 'note_on'):
-                notes.append(noteToFreq(msg.note))
-                times.append(msg.time)
+                time = msg.time
+                while(time > 255):
+                    notes.append(msg.note)
+                    times.append(255)
+                    time = time - 255
+
+                notes.append(msg.note)
+                times.append(time)                    
+
 
 
        

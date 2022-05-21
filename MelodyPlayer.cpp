@@ -1,16 +1,27 @@
 #include "MelodyPlayer.h"
+#include <math.h>
+
+int midiToFreq(int midiNote){
+  float a = 440;
+  return (int)((a / 32) * pow(2, ((float)(midiNote - 9) / 12.0)));
+}
 
 
 int Melody_Player(int state){
-    static int noteIndex;
-    static int prevNoteTime;
+    static int melodyNoteIndex;
+    static int prevMelodyNoteTime;
+    static int backgroundNoteIndex;
+    static int prevBackgroundNoteTime;
+    static int tick;
     //Read thing
     switch(state){ // State transitions
       case MELODY_INIT:
          //State Transition
             state = MELODY_PLAY;
-            prevNoteTime = 0;
-            noteIndex = 0;
+            prevMelodyNoteTime = 0;
+            melodyNoteIndex = 0;
+            backgroundNoteIndex = 0;
+            prevBackgroundNoteTime = 0;
         break;
       case MELODY_PLAY:
          //State Transition
@@ -25,19 +36,41 @@ int Melody_Player(int state){
       case MELODY_PLAY:{
         //State Action
         
-        if(noteIndex < melodyLength){
-            if(prevNoteTime >= times[noteIndex]){
-                tone(melodyBuzzer, notes[noteIndex]);
-                prevNoteTime = 0;
-                noteIndex++;
-            }   
+        // Melody
+        if(melodyNoteIndex < melodyLength){
+            if(prevMelodyNoteTime >= melodyTimes[melodyNoteIndex]){
+                int note = midiToFreq(melodyNotes[melodyNoteIndex]);
+                tone(melodyBuzzer, note);
+                prevMelodyNoteTime = 0;
+                melodyNoteIndex++;
+            }
+          
+
         }
         else{
             noTone(melodyBuzzer);
         }
 
+        // // Background
+        // if(backgroundNoteIndex < backgroundLength){
+        //     if(prevBackgroundNoteTime >= backgroundTimes[backgroundNoteIndex]){
+        //         int note = midiToFreq(backgroundNotes[backgroundNoteIndex]);
+        //         tone(backgroundBuzzer, note);
+        //         prevBackgroundNoteTime = 0;
+        //         backgroundNoteIndex++;
+        //     }
+        //     else if(prevBackgroundNoteTime >= 100){
+        //       // noTone(backgroundBuzzer);
+        //     }
+        // }
+        // else{
+        //     noTone(backgroundBuzzer);
+        // }        
+
         
-        prevNoteTime += 10;
+        prevBackgroundNoteTime += 10;
+        prevMelodyNoteTime += 10;
+        tick++;
         //State Action
         break;
       }

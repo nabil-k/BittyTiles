@@ -6,15 +6,12 @@
 const int rs = 4, en = 5, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-const int backgroundBuzzer = 12;
-
 int delay_gcd = 10;
 
 
 void setup() {
     //some set up (Default Arduino Function)
     Serial.begin(9600);
-
 
     unsigned char i = 0;
 
@@ -41,5 +38,4 @@ void loop() {
      }
    }
 
-   delay(delay_gcd);
 }
