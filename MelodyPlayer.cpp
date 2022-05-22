@@ -1,4 +1,5 @@
 #include "MelodyPlayer.h"
+#include "Common.h"
 #include <math.h>
 
 int midiToFreq(int midiNote){

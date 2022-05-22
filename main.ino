@@ -2,7 +2,7 @@
 #include "tasks/Task.h"
 #include "Tiles.h"
 #include <LiquidCrystal.h>
-#include "Matrix.h"
+#include "Common.h"
 
 // Array of Output Pin variables, set to the pins being used
 const int rs = 4, en = 5, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
