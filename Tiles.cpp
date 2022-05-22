@@ -1,5 +1,6 @@
 #include "Tiles.h"
 #include "Common.h"
+#include <stdlib.h>     /* srand, rand */
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, 6,
   NEO_MATRIX_TOP  + NEO_MATRIX_LEFT +
@@ -14,7 +15,9 @@ const uint16_t colors[] = {
 
 NoteKey midiNoteToNoteKey(int midiNote){
   int octave  = (midiNote - 21) % 12;
-  
+
+  return octave % 3;
+
   if(octave <= 3){
     return A;
   }
@@ -59,32 +62,38 @@ int Tiles(int state){
         matrix.fillScreen(matrix.Color(0, 0, 0));
         
         if(prevMelodyNoteIndex == melodyNoteIndex){
-          timeDisplacement += 100;
+          timeDisplacement += 50;
         }
 
-        while(pos < melodyLength && totalTime <= 400) {
+        if(prevMelodyNoteIndex != melodyNoteIndex){
+          timeDisplacement = 0;
+        }
+
+        while(pos < melodyLength && totalTime <= 600) {
           totalTime += melodyTimes[pos];
           
-          if(totalTime > 400){
+          if(totalTime > 600){
             break;
           }
 
           NoteKey key = midiNoteToNoteKey(melodyNotes[pos]);
-          unsigned int rectY = 8 - ((totalTime - timeDisplacement) / 100 * 2);
+          unsigned int rectY = 7 - ((totalTime - timeDisplacement) / 50);
           unsigned int rectX = key * 3;
+          // if(timeDisplacement > 50){
+          //   ;
+          // }
+
 
           matrix.fillRect(rectX, rectY, 2, 2, colors[key]);
+          
 
-          
-          totalTime += melodyTimes[pos];
-          
-          if(prevMelodyNoteIndex != melodyNoteIndex){
-            prevMelodyNoteIndex = melodyNoteIndex;
-            timeDisplacement = 0;
-          }
+
+          prevMelodyNoteIndex = melodyNoteIndex;
 
           pos++;
         }
+
+
          
         matrix.show();
 

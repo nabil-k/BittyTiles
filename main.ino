@@ -47,11 +47,12 @@ void loop() {
   // put your main code here, to run repeatedly:
   unsigned char i;
   for (i = 0; i < tasksNum; ++i) {
-     if ( (millis() - tasks[i].elapsedTime) >= tasks[i].period) {
+     if ( (millis() - tasks[i].elapsedTime) >= tasks[i].period - 1) {
         tasks[i].state = tasks[i].TickFct(tasks[i].state);
         tasks[i].elapsedTime = millis(); // Last time this task was ran
       
      }
    }
+  
 
 }

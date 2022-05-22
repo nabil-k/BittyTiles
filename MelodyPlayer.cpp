@@ -39,19 +39,17 @@ int Melody_Player(int state){
         if(melodyNoteIndex < melodyLength){
             if(prevMelodyNoteTime >= melodyTimes[melodyNoteIndex]){
                 int note = midiToFreq(melodyNotes[melodyNoteIndex]);
-                // tone(melodyBuzzer, note);
+                tone(melodyBuzzer, note);
                 prevMelodyNoteTime = 0;
                 melodyNoteIndex++;
             }
-          
-
         }
         else{
             noTone(melodyBuzzer);
         }
         
-        prevBackgroundNoteTime += 20;
-        prevMelodyNoteTime += 20;
+        prevBackgroundNoteTime += 10;
+        prevMelodyNoteTime += 10;
         tick++;
         //State Action
         break;
