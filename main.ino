@@ -3,6 +3,9 @@
 #include "Tiles.h"
 #include <LiquidCrystal.h>
 #include "Common.h"
+#ifndef PSTR
+ #define PSTR // Make Arduino Due happy
+#endif
 
 // Array of Output Pin variables, set to the pins being used
 const int rs = 4, en = 5, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
@@ -19,7 +22,7 @@ void setup() {
    unsigned char i = 0;
 
    tasks[i].state = 0;
-   tasks[i].period = 10;
+   tasks[i].period = 20;
    tasks[i].elapsedTime = 0;
    tasks[i].TickFct = &Melody_Player;
    i++;
@@ -33,7 +36,7 @@ void setup() {
 
    matrix.begin();
    matrix.setTextWrap(false);
-   matrix.setBrightness(40);
+   matrix.setBrightness(1);
 
 
     lcd.print("WE LOVE");

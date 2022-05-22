@@ -2,8 +2,8 @@
 #include "Common.h"
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, 6,
-  NEO_MATRIX_TOP     + NEO_MATRIX_RIGHT +
-  NEO_MATRIX_COLUMNS + NEO_MATRIX_PROGRESSIVE,
+  NEO_MATRIX_TOP  + NEO_MATRIX_LEFT +
+  NEO_MATRIX_ROWS + NEO_MATRIX_PROGRESSIVE,
   NEO_GRB            + NEO_KHZ800);
 
 const uint16_t colors[] = {
@@ -55,6 +55,7 @@ int Tiles(int state){
           break;
         }
 
+        // Clearing screen
         matrix.fillScreen(matrix.Color(0, 0, 0));
         
         if(prevMelodyNoteIndex == melodyNoteIndex){
@@ -69,7 +70,7 @@ int Tiles(int state){
           }
 
           NoteKey key = midiNoteToNoteKey(melodyNotes[pos]);
-          unsigned int rectY = 8 - (melodyTimes[pos] / 100 * 2);
+          unsigned int rectY = 8 - ((totalTime - timeDisplacement) / 100 * 2);
           unsigned int rectX = key * 3;
 
           matrix.fillRect(rectX, rectY, 2, 2, colors[key]);
@@ -79,11 +80,13 @@ int Tiles(int state){
           
           if(prevMelodyNoteIndex != melodyNoteIndex){
             prevMelodyNoteIndex = melodyNoteIndex;
+            timeDisplacement = 0;
           }
 
           pos++;
         }
          
+        matrix.show();
 
         break;
       }

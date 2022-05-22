@@ -39,7 +39,7 @@ int Melody_Player(int state){
         if(melodyNoteIndex < melodyLength){
             if(prevMelodyNoteTime >= melodyTimes[melodyNoteIndex]){
                 int note = midiToFreq(melodyNotes[melodyNoteIndex]);
-                tone(melodyBuzzer, note);
+                // tone(melodyBuzzer, note);
                 prevMelodyNoteTime = 0;
                 melodyNoteIndex++;
             }
@@ -49,26 +49,9 @@ int Melody_Player(int state){
         else{
             noTone(melodyBuzzer);
         }
-
-        // // Background
-        // if(backgroundNoteIndex < backgroundLength){
-        //     if(prevBackgroundNoteTime >= backgroundTimes[backgroundNoteIndex]){
-        //         int note = midiToFreq(backgroundNotes[backgroundNoteIndex]);
-        //         tone(backgroundBuzzer, note);
-        //         prevBackgroundNoteTime = 0;
-        //         backgroundNoteIndex++;
-        //     }
-        //     else if(prevBackgroundNoteTime >= 100){
-        //       // noTone(backgroundBuzzer);
-        //     }
-        // }
-        // else{
-        //     noTone(backgroundBuzzer);
-        // }        
-
         
-        prevBackgroundNoteTime += 10;
-        prevMelodyNoteTime += 10;
+        prevBackgroundNoteTime += 20;
+        prevMelodyNoteTime += 20;
         tick++;
         //State Action
         break;
