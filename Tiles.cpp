@@ -13,25 +13,19 @@ const uint16_t colors[] = {
   matrix.Color(0, 0, 255) 
 };
 
-NoteKey midiNoteToNoteKey(int midiNote){
+int midiNoteToNoteKey(int midiNote){
   int octave  = (midiNote - 21) % 12;
 
   return octave % 3;
-
-  if(octave <= 3){
-    return A;
-  }
-  else if(octave <= 7){
-    return B;
-  }
-
-  return C;
 }
 
 
 int Tiles(int state){
     static int timeDisplacement;
     static int prevMelodyNoteIndex;
+    static int prevLastHitNoteY;
+    static int prevLastHitNoteX;
+
     //Read thing
     switch(state){ // State transitions
       case TILES_INIT:
@@ -45,7 +39,9 @@ int Tiles(int state){
     switch(state){ // State Action
       case TILES_INIT:{
          //State Action
-         prevMelodyNoteIndex = melodyNoteIndex;
+        prevMelodyNoteIndex = melodyNoteIndex;
+        prevLastHitNoteY = 0;
+        prevLastHitNoteX = 0;
         break;
       }
 
@@ -53,48 +49,58 @@ int Tiles(int state){
         //State Action
         int totalTime = 0;
         int pos = melodyNoteIndex;
+        bool adjustment = false;
+        
 
         if(pos >= melodyLength){
           break;
         }
 
         // Clearing screen
-        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.fillScreen(matrix.Color(255, 255, 255));
         
         if(prevMelodyNoteIndex == melodyNoteIndex){
           timeDisplacement += 50;
         }
+        else{
 
-        if(prevMelodyNoteIndex != melodyNoteIndex){
           timeDisplacement = 0;
         }
 
-        while(pos < melodyLength && totalTime <= 600) {
+        if(prevLastHitNoteY != 0){
+          matrix.fillRect(prevLastHitNoteX, prevLastHitNoteY, 2, 1, colors[prevLastHitNoteX / 3]);
+          prevLastHitNoteX, prevLastHitNoteY = 0;
+        }        
+
+        // Serial.print(timeDisplacement);
+        // Serial.print(" index: ");
+        // Serial.println(pos);
+
+        while(pos < melodyLength && totalTime <= 650) {
           totalTime += melodyTimes[pos];
           
-          if(totalTime > 600){
+          if(totalTime > 650){
             break;
           }
 
-          NoteKey key = midiNoteToNoteKey(melodyNotes[pos]);
+          NoteKey key = (NoteKey)midiNoteToNoteKey(melodyNotes[pos]);
           unsigned int rectY = 7 - ((totalTime - timeDisplacement) / 50);
           unsigned int rectX = key * 3;
-          // if(timeDisplacement > 50){
-          //   ;
-          // }
-
+          
+          if(rectY == 6){
+            prevLastHitNoteY = 7;
+            prevLastHitNoteX = rectX;
+          }
 
           matrix.fillRect(rectX, rectY, 2, 2, colors[key]);
-          
-
-
-          prevMelodyNoteIndex = melodyNoteIndex;
 
           pos++;
         }
 
 
-         
+
+        prevMelodyNoteIndex = melodyNoteIndex;
+
         matrix.show();
 
         break;

@@ -39,7 +39,7 @@ void setup() {
    matrix.setBrightness(1);
 
 
-    lcd.print("WE LOVE");
+   lcd.print("WE LOVE");
 }
 
 
