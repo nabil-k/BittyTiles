@@ -1,5 +1,6 @@
 #include "MelodyPlayer.h"
 #include "Common.h"
+#include "Game.h"
 #include <math.h>
 
 int midiToFreq(int midiNote){
@@ -16,7 +17,9 @@ int Melody_Player(int state){
     switch(state){ // State transitions
       case MELODY_INIT:
          //State Transition
-            state = MELODY_PLAY;
+            if(gameState == GAME_PLAY){
+              state = MELODY_PLAY;
+            }
             prevMelodyNoteTime = 0;
             melodyNoteIndex = 0;
             backgroundNoteIndex = 0;
@@ -24,6 +27,9 @@ int Melody_Player(int state){
         break;
       case MELODY_PLAY:
          //State Transition
+        if(gameState == GAME_END){
+          state = MELODY_INIT;
+        }
         break;
     }
     switch(state){ // State Action
@@ -39,7 +45,7 @@ int Melody_Player(int state){
         if(melodyNoteIndex < melodyLength){
             if(prevMelodyNoteTime >= melodyTimes[melodyNoteIndex]){
                 int note = midiToFreq(melodyNotes[melodyNoteIndex]);
-                tone(melodyBuzzer, note);
+                //tone(melodyBuzzer, note);
                 prevMelodyNoteTime = 0;
                 melodyNoteIndex++;
             }

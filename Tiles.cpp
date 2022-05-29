@@ -1,6 +1,9 @@
 #include "Tiles.h"
 #include "Common.h"
 #include <stdlib.h>     /* srand, rand */
+#include "Game.h"
+
+NoteKey keyToPlay = NO_KEY;
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, 6,
   NEO_MATRIX_TOP  + NEO_MATRIX_LEFT +
@@ -28,13 +31,26 @@ int Tiles(int state){
 
     //Read thing
     switch(state){ // State transitions
-      case TILES_INIT:
-        state = TILES_PLAY;
+      case TILES_INIT:{
+        if(gameState == GAME_PLAY){
+          state = TILES_PLAY;
+        }
          //State Transition
         break;
-      case TILES_PLAY:
+      }
+      case TILES_PLAY:{
+        if(gameState == GAME_END){
+          state = TILES_END;
+        }
          //State Transition
         break;
+      }
+      case TILES_END: {
+        if(gameState == GAME_INIT){
+          state = TILES_INIT;
+        }
+        break;
+      }
     }
     switch(state){ // State Action
       case TILES_INIT:{
@@ -42,6 +58,7 @@ int Tiles(int state){
         prevMelodyNoteIndex = melodyNoteIndex;
         prevLastHitNoteY = 0;
         prevLastHitNoteX = 0;
+        matrix.fillScreen(matrix.Color(255, 0, 255));
         break;
       }
 
@@ -90,6 +107,7 @@ int Tiles(int state){
           if(rectY == 6){
             prevLastHitNoteY = 7;
             prevLastHitNoteX = rectX;
+            keyToPlay = key;
           }
 
           matrix.fillRect(rectX, rectY, 2, 2, colors[key]);
@@ -101,11 +119,17 @@ int Tiles(int state){
 
         prevMelodyNoteIndex = melodyNoteIndex;
 
-        matrix.show();
+        
 
+        break;
+      }
+
+      case TILES_END:{
+        matrix.fillScreen(matrix.Color(0, 0, 255));
         break;
       }
     }
 
+    matrix.show();
     return state;
 }

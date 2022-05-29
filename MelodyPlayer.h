@@ -13,6 +13,7 @@
 
 const unsigned char melodyBuzzer = 13;
 const unsigned char backgroundBuzzer = 12;
+extern int midiToFreq(int midiNote);
 enum melody_player_states { MELODY_INIT, MELODY_PLAY};
 int Melody_Player(int state);
 

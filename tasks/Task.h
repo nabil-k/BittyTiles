@@ -9,7 +9,7 @@ typedef struct task {
     
 } task;
 
-const unsigned short tasksNum = 2;
+const unsigned short tasksNum = 4;
 task tasks[tasksNum];
 
 #endif
