@@ -23,6 +23,7 @@ int midiNoteToNoteKey(int midiNote){
   return octave % 3;
 }
 
+int cc = 0;
 
 int Tiles(int state){
     static int timeDisplacement;
@@ -33,6 +34,7 @@ int Tiles(int state){
     //Read thing
     switch(state){ // State transitions
       case TILES_INIT:{
+        
         if(gameState == GAME_PLAY){
           state = TILES_PLAY;
         }
@@ -56,10 +58,13 @@ int Tiles(int state){
     switch(state){ // State Action
       case TILES_INIT:{
          //State Action
+        
         prevMelodyNoteIndex = melodyNoteIndex;
         prevLastHitNoteY = 0;
         prevLastHitNoteX = 0;
-        matrix.fillScreen(matrix.Color(255, 0, 255));
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.fillTriangle(2, 6, 2, 1, 6, 4, matrix.Color(255, 0, 0));
+
         break;
       }
 
@@ -122,7 +127,8 @@ int Tiles(int state){
       }
 
       case TILES_END:{
-        matrix.fillScreen(matrix.Color(0, 0, 255));
+        matrix.fillScreen(matrix.Color(0, 0, 0));
+        matrix.fillTriangle(2, 6, 2, 1, 6, 4, matrix.Color(255, 255, 0));
         break;
       }
     }
