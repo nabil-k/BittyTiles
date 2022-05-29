@@ -15,7 +15,7 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 int delay_gcd = 10;
 
-
+int potPin = A1;
 
 void setup() {
     //some set up (Default Arduino Function)
@@ -64,6 +64,11 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   unsigned char i;
+  int gameSpeed = map(analogRead(potPin), 0, 1023, 1, 4);
+  
+  tasks[0].period = 20 / gameSpeed;
+  tasks[1].period = 100 / gameSpeed;
+
   for (i = 0; i < tasksNum; ++i) {
      if ( (millis() - tasks[i].elapsedTime) >= tasks[i].period - 1) {
         tasks[i].state = tasks[i].TickFct(tasks[i].state);
