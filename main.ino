@@ -3,6 +3,9 @@
 #include "Tiles.h"
 #include <LiquidCrystal.h>
 #include "Common.h"
+#include "Keys.h"
+#include "Game.h"
+
 #ifndef PSTR
  #define PSTR // Make Arduino Due happy
 #endif
@@ -19,6 +22,11 @@ void setup() {
     //some set up (Default Arduino Function)
    Serial.begin(9600);
 
+   pinMode(buttons[0], INPUT_PULLUP);
+   pinMode(buttons[1], INPUT_PULLUP);
+   pinMode(buttons[2], INPUT_PULLUP);
+
+
    unsigned char i = 0;
 
    tasks[i].state = 0;
@@ -30,6 +38,17 @@ void setup() {
    tasks[i].period = 100;
    tasks[i].elapsedTime = 0;
    tasks[i].TickFct = &Tiles;
+   i++;
+   tasks[i].state = 0;
+   tasks[i].period = 20;
+   tasks[i].elapsedTime = 0;
+   tasks[i].TickFct = &Keys;
+   i++;
+   tasks[i].state = 0;
+   tasks[i].period = 20;
+   tasks[i].elapsedTime = 0;
+   tasks[i].TickFct = &Game;
+
 
    delay_gcd = 10; // GCD
    lcd.begin(16,2);
