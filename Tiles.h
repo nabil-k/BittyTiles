@@ -5,6 +5,7 @@
 
 enum NoteKey{A, B, C, NO_KEY};
 extern NoteKey keyToPlay;
+extern int noteToPlay;
 enum tiles_states { TILES_INIT, TILES_PLAY, TILES_END};
 int Tiles(int state);
 

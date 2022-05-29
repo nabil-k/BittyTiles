@@ -15,6 +15,8 @@ int Game(int state){
     static bool playNote;
     static int tick;
     static bool buttonPressed;
+    static NoteKey prevNote;
+    static int buttonWatched;
     
     switch(state){
         case GAME_SET:{
@@ -22,15 +24,19 @@ int Game(int state){
             playNote = false;
             tick = 0; 
             state =  GAME_INIT;
+            prevNote = NO_KEY;
+            buttonWatched = -1;
             break;
         }
         case GAME_INIT:{
             for(unsigned char i = 0; i < 3; i++){
                     if(button_state[i] && !buttonPressed){
-                     buttonPressed = true;
+                        buttonWatched = i;
+                        buttonPressed = true;
                     }
-                    else if(!button_state[i] && buttonPressed){
+                    else if(!button_state[buttonWatched] && buttonPressed){
                         state = GAME_PLAY;
+                        buttonWatched = -1;
                         buttonPressed = false;   
                     }
             }
@@ -39,18 +45,21 @@ int Game(int state){
         case GAME_PLAY:{
             if(melodyNoteIndex >= melodyLength){
                 state = GAME_END;
+                buttonPressed = false;
             }         
             
             break;
         }
         case GAME_END:{
-            if(tick > 9){
+            if(tick >= 9){
                 for(unsigned char i = 0; i < 3; i++){
                     if(button_state[i] && !buttonPressed){
-                     buttonPressed = true;
+                        buttonWatched = i;
+                        buttonPressed = true;
                     }
-                    else if(!button_state[i] && buttonPressed){
+                    else if(!button_state[buttonWatchedi] && buttonPressed){
                         state = GAME_SET;
+                        buttonWatched = -1;
                         buttonPressed = false;   
                     }
                 }
@@ -65,12 +74,10 @@ int Game(int state){
             break;
         }
         case GAME_PLAY:{
-            int note = midiToFreq(melodyNotes[melodyNoteIndex]);
+            int note = midiToFreq(noteToPlay);
             
-            // Serial.println("??");
             if(keyToPlay != NO_KEY){
                 if(button_state[keyToPlay]){
-                    Serial.println(button_state[keyToPlay]);
                     tone(melodyBuzzer, note);
                 }
                 else{
@@ -78,19 +85,18 @@ int Game(int state){
                     for(int key = 0; key < 3; key++){
                         if(key != keyToPlay && button_state[key]){
                             playError = true;
-                            
                         }
                     }
 
                     if(playError){
-                        tone(melodyBuzzer, 100);
+                        tone(melodyBuzzer, 50);
                     }
                     else{
                         noTone(melodyBuzzer);
                     }
                 }
             }
-
+            
             break;
         }
         case GAME_END:{

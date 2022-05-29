@@ -4,6 +4,7 @@
 #include "Game.h"
 
 NoteKey keyToPlay = NO_KEY;
+int noteToPlay = 0;
 
 Adafruit_NeoMatrix matrix = Adafruit_NeoMatrix(8, 8, 6,
   NEO_MATRIX_TOP  + NEO_MATRIX_LEFT +
@@ -83,16 +84,13 @@ int Tiles(int state){
           timeDisplacement = 0;
         }
 
+        keyToPlay = NO_KEY;
+
         if(prevLastHitNoteY != 0){
           matrix.fillRect(prevLastHitNoteX, prevLastHitNoteY, 2, 1, colors[prevLastHitNoteX / 3]);
           prevLastHitNoteX, prevLastHitNoteY = 0;
-        }        
-
-        // Serial.print(timeDisplacement);
-        // Serial.print(" index: ");
-        // Serial.println(pos);
-
-        keyToPlay = NO_KEY;
+          keyToPlay = (NoteKey)(prevLastHitNoteX / 3);
+        }              
 
         while(pos < melodyLength && totalTime <= 650) {
           totalTime += melodyTimes[pos];
@@ -109,6 +107,7 @@ int Tiles(int state){
             prevLastHitNoteY = 7;
             prevLastHitNoteX = rectX;
             keyToPlay = key;
+            noteToPlay = melodyNotes[pos];
           }
 
           matrix.fillRect(rectX, rectY, 2, 2, colors[key]);
