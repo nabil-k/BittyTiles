@@ -1,7 +1,6 @@
 #include "MelodyPlayer.h"
 #include "tasks/Task.h"
 #include "Tiles.h"
-#include <LiquidCrystal.h>
 #include "Common.h"
 #include "Keys.h"
 #include "Game.h"
@@ -11,7 +10,7 @@
 #endif
 
 // Array of Output Pin variables, set to the pins being used
-const int rs = 4, en = 5, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
+int rs = 4, en = 5, d4 = 8, d5 = 9, d6 = 10, d7 = 11;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 int delay_gcd = 10;
@@ -58,7 +57,7 @@ void setup() {
    matrix.setBrightness(1);
 
 
-   lcd.print("WE LOVE");
+   lcd.print("Initializing Game...");
 }
 
 

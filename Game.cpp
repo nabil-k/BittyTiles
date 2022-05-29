@@ -3,6 +3,7 @@
 #include "MelodyPlayer.h"
 #include "Tiles.h"
 #include "Common.h"
+#include <LiquidCrystal.h>
 
 /*
 
@@ -72,7 +73,10 @@ int Game(int state){
     }
 
     switch(state){
-        case GAME_INIT:{           
+        case GAME_INIT:{
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Press a button");         
             break;
         }
         case GAME_PLAY:{
@@ -81,6 +85,7 @@ int Game(int state){
             if(keyToPlay != NO_KEY){
                 if(button_state[keyToPlay]){
                     tone(melodyBuzzer, note);
+                    score++;
                 }
                 else{
                     bool playError = false;
@@ -98,10 +103,21 @@ int Game(int state){
                     }
                 }
             }
-            
+            lcd.clear();
+            lcd.setCursor(0, 1);
+            lcd.print("Score: ");
+            lcd.print(String(score/4));
+
             break;
         }
         case GAME_END:{
+            noTone(melodyBuzzer);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Game Over");
+            lcd.setCursor(0, 1);
+            lcd.print("Score: ");
+            lcd.print(String(score/4));
             tick++;
             break;
         } 
