@@ -9,6 +9,7 @@ int Keys(int state){
         case KEY_INIT:{
             for(unsigned char i = 0; i < 3; i++){
                 button_state[i] = !digitalRead(buttons[i]);
+                
             }
             break;
         }

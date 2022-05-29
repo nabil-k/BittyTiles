@@ -13,28 +13,30 @@ int Melody_Player(int state){
     static int backgroundNoteIndex;
     static int prevBackgroundNoteTime;
     static int tick;
-    //Read thing
-    switch(state){ // State transitions
-      case MELODY_INIT:
-         //State Transition
-            if(gameState == GAME_PLAY){
-              state = MELODY_PLAY;
-            }
-            prevMelodyNoteTime = 0;
-            melodyNoteIndex = 0;
-            backgroundNoteIndex = 0;
-            prevBackgroundNoteTime = 0;
-        break;
-      case MELODY_PLAY:
+    switch(state){ 
+      case MELODY_INIT:{
+        if(gameState == GAME_PLAY){
+          state = MELODY_PLAY;
+        }
+
+        break;   
+      }
+      case MELODY_PLAY:{
          //State Transition
         if(gameState == GAME_END){
           state = MELODY_INIT;
         }
+
         break;
+      }
+
     }
     switch(state){ // State Action
       case MELODY_INIT:{
-         //State Action
+        prevMelodyNoteTime = 0;
+        melodyNoteIndex = 0;
+        backgroundNoteIndex = 0;
+        prevBackgroundNoteTime = 0; 
         break;
       }
 
@@ -44,14 +46,9 @@ int Melody_Player(int state){
         // Melody
         if(melodyNoteIndex < melodyLength){
             if(prevMelodyNoteTime >= melodyTimes[melodyNoteIndex]){
-                int note = midiToFreq(melodyNotes[melodyNoteIndex]);
-                //tone(melodyBuzzer, note);
                 prevMelodyNoteTime = 0;
                 melodyNoteIndex++;
             }
-        }
-        else{
-            noTone(melodyBuzzer);
         }
         
         prevBackgroundNoteTime += 10;

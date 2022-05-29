@@ -45,7 +45,7 @@ void setup() {
    tasks[i].TickFct = &Keys;
    i++;
    tasks[i].state = 0;
-   tasks[i].period = 20;
+   tasks[i].period = 100;
    tasks[i].elapsedTime = 0;
    tasks[i].TickFct = &Game;
 

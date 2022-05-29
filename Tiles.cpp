@@ -67,7 +67,6 @@ int Tiles(int state){
         int totalTime = 0;
         int pos = melodyNoteIndex;
         bool adjustment = false;
-        
 
         if(pos >= melodyLength){
           break;
@@ -93,6 +92,8 @@ int Tiles(int state){
         // Serial.print(" index: ");
         // Serial.println(pos);
 
+        keyToPlay = NO_KEY;
+
         while(pos < melodyLength && totalTime <= 650) {
           totalTime += melodyTimes[pos];
           
@@ -114,12 +115,9 @@ int Tiles(int state){
 
           pos++;
         }
-
-
+        
 
         prevMelodyNoteIndex = melodyNoteIndex;
-
-        
 
         break;
       }
