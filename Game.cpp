@@ -17,6 +17,7 @@ int Game(int state){
     static bool buttonPressed;
     static NoteKey prevNote;
     static int buttonWatched;
+    static int score;
     
     switch(state){
         case GAME_SET:{
@@ -26,6 +27,7 @@ int Game(int state){
             state =  GAME_INIT;
             prevNote = NO_KEY;
             buttonWatched = -1;
+            score = 0;
             break;
         }
         case GAME_INIT:{
@@ -57,7 +59,7 @@ int Game(int state){
                         buttonWatched = i;
                         buttonPressed = true;
                     }
-                    else if(!button_state[buttonWatchedi] && buttonPressed){
+                    else if(!button_state[buttonWatched] && buttonPressed){
                         state = GAME_SET;
                         buttonWatched = -1;
                         buttonPressed = false;   
