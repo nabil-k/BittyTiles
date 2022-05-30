@@ -17,6 +17,8 @@ for i, track in enumerate(mid.tracks):
     print('Track {}: {}'.format(i, track.name))
     preTime = 0
     for msg in track:
+        if(len(notes) > 444):
+            break
         if(msg.type == 'note_on' and msg.channel != 0):
             msg.velocity = 0 # silences channels we dont wanna hear
             preTime += msg.time
